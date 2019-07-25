@@ -6,7 +6,8 @@ define([
     "episerver-labs-block-enhancements/publish-with-local-content-items/initializer",
     "episerver-labs-block-enhancements/inline-editing/initializer",
     "episerver-labs-block-enhancements/inline-publish/initializer",
-    "episerver-labs-block-enhancements/content-draft-view/initializer"
+    "episerver-labs-block-enhancements/content-draft-view/initializer",
+    "episerver-labs-block-enhancements/content-compare/initializer"
 ], function (
     declare,
     _Module,
@@ -15,7 +16,8 @@ define([
     publishWithLocalContentItemsInitializer,
     inlineEditingInitializer,
     inlinePublishInitializer,
-    contentDraftViewInitializer
+    contentDraftViewInitializer,
+    contentCompareInitializer
 ) {
     return declare([_Module], {
         initialize: function () {
@@ -37,6 +39,7 @@ define([
             if (options.contentDraftView) {
                 contentDraftViewInitializer();
             }
+            contentCompareInitializer();
         }
     });
 });

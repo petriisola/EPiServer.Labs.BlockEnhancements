@@ -170,6 +170,11 @@
     </Compile>
     <Compile Include="BlockEnhancementsModuleViewModel.cs" />
     <Compile Include="BlockEnhancementsStore.cs" />
+    <Compile Include="ContentCompare\ContentByDateLoader.cs" />
+    <Compile Include="ContentCompare\ContentCompareInitializer.cs" />
+    <Compile Include="ContentCompare\ContentCompareContentAreaLoader.cs" />
+    <Compile Include="ContentCompare\ContentCompareStore.cs" />
+    <Compile Include="ContentCompare\ContentCompareViewConfiguration.cs" />
     <Compile Include="ContentDraftView\ContentDraftView.cs" />
     <Compile Include="ContentDraftView\CustomContentAreaLoader.cs" />
     <Compile Include="ContentDraftView\ContentDraftViewInitializer.cs" />

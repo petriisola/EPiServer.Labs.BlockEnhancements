@@ -1,4 +1,14 @@
 ﻿@using AlloyTemplates
 @model PageViewModel<AlloyTemplates.Models.Pages.StartPage>
 
+
+<h2>Current page version: @Html.Raw(this.Model.CurrentPage.ContentLink)</h2>
+
+<h2>Keywords</h2>
+
+@Html.PropertyFor(x => x.CurrentPage.MetaKeywords);
+
+<h2>Description</h2>
+@Html.PropertyFor(x => x.CurrentPage.MetaDescription);
+
 @Html.PropertyFor(x => x.CurrentPage.MainContentArea, new { CssClass = "row equal-height", tag = Global.ContentAreaTags.FullWidth })

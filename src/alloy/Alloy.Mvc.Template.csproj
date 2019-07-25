@@ -393,6 +393,17 @@
     <Content Include="EPiServer.Labs.BlockEnhancements.nuspec" />
     <Content Include="favicon.ico" />
     <Content Include="libman.json" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\content-compare-view-controller.js" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\compare-view.js" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\date-formatter.js" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\initializer.js" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\label-color-resolver.js" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\styles.css" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\time-slider.css" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\time-slider.html" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\time-slider.js" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\version-selector-template.html" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\version-selector.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-draft-view\command-provider.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-draft-view\common-drafts-view-mixin.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-draft-view\initializer.js" />
@@ -421,7 +432,9 @@
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\status-indicator\initializer.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\status-indicator\latest-content-resolver.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\store-initializer.js" />
-    <Content Include="modules\_protected\episerver-labs-block-enhancements\module.config" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\module.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="modules\_protected\episerver-labs-block-enhancements\web.config" />
     <Content Include="Resources\LanguageFiles\PropertyNames_sv.xml">
       <SubType>Designer</SubType>
