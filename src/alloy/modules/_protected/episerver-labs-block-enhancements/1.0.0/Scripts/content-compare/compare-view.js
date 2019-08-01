@@ -10,8 +10,10 @@ define([
     ) {
         return declare([SideBySideCompareView], {
             _setRightVersionUrlAttr: function (url) {
-                if (url) {
+                if (url && url !== "about:blank") {
                     this._rightIframe.load(url + "&maxContentDate=" + dateFormatter(this.model.toDate));
+                } else {
+                    this.inherited(arguments);
                 }
             }
         });

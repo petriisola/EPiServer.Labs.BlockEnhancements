@@ -6,6 +6,7 @@ define([
     "dojo/topic",
     "dojo/when",
     "epi/dependency",
+        "epi-cms/core/ContentReference",
     "epi-cms/compare/views/CompareView",
     "epi-cms/compare/CompareToolbar",
     "episerver-labs-block-enhancements/content-compare/version-selector",
@@ -20,6 +21,7 @@ define([
         topic,
         when,
         dependency,
+        ContentReference,
         CompareView,
         CompareToolbar,
         VersionSelector,
@@ -51,17 +53,17 @@ define([
                     }
                 },
 
-                this.own(
-                    on(this.versionSelector, "fromDateChanged", this._changeLeftVersionDate.bind(this)),
-                    on(this.versionSelector, "toDateChanged", this._changeRightVersionDate.bind(this))
-                );
+                    this.own(
+                        on(this.versionSelector, "fromDateChanged", this._changeLeftVersionDate.bind(this)),
+                        on(this.versionSelector, "toDateChanged", this._changeRightVersionDate.bind(this))
+                    );
 
-              /*
-TODO: compare When view is not contentcompare then hide time slider and don't load all versions
-topic.subscribe("/epi/shell/action/changeview", lang.hitch(this, "viewComponentChangeRequested")),
-                    //"contentcompare"
-
-                    //"/epi/shell/action/changeview/updatestate"*/
+                /*
+  TODO: compare When view is not contentcompare then hide time slider and don't load all versions
+  topic.subscribe("/epi/shell/action/changeview", lang.hitch(this, "viewComponentChangeRequested")),
+                      //"contentcompare"
+  
+                      //"/epi/shell/action/changeview/updatestate"*/
             },
 
             contentContextChanged: function (context, callerData, request) {
@@ -69,6 +71,11 @@ topic.subscribe("/epi/shell/action/changeview", lang.hitch(this, "viewComponentC
 
                 //TODO: compare Handle one version and no blocks
 
+                var contentLink = new ContentReference(context.id).id;
+                if (contentLink === this._lastId) {
+                    return;
+                }
+                this._lastId = contentLink;
 
                 this.versionSelector.clear();
                 this._contentVersionStore.query({ contentLink: context.id, language: "en" }).then(function (versions) {
@@ -91,7 +98,7 @@ topic.subscribe("/epi/shell/action/changeview", lang.hitch(this, "viewComponentC
 
                             this.versionSelector.setContentVersions(versions);
                             this.versionSelector.setReferencedContents(contents);
-                    }.bind(this));
+                        }.bind(this));
                 }.bind(this));
             },
 
@@ -138,18 +145,23 @@ topic.subscribe("/epi/shell/action/changeview", lang.hitch(this, "viewComponentC
                     that._comparestore.executeMethod("GetContentVersionByDate", null,
                         { contentLink: currentContent.contentLink, date: date }).then(function (contentLink) {
 
-                        // load content version
-                        when(that._contentVersionStore.get(contentLink)).then(function (contentVersion) {
-                            afterVersionGetCallback(contentVersion);
+                            // load content version
+                            when(that._contentVersionStore.get(contentLink)).then(function (contentVersion) {
+                                afterVersionGetCallback(contentVersion);
+                            });
                         });
-                    });
                 });
             },
-            
+
             _changeUrl: function (url, forceReload) {
                 this._previewQueryParameters =
                     lang.mixin(this._previewQueryParameters, { maxContentDate: dateFormatter(this.compareModel.fromDate) });
 
+                return this.inherited(arguments);
+            },
+
+            setView: function () {
+                this.versionSelector.container.resize();
                 return this.inherited(arguments);
             }
         });

@@ -2,6 +2,7 @@ define([
         "dojo/_base/declare",
         "dojo/on",
         "dojo/dom-geometry",
+        "dojo/dom-class",
         "dijit/_CssStateMixin",
         "dijit/_Widget",
         "dijit/_TemplatedMixin",
@@ -14,6 +15,7 @@ define([
         declare,
         on,
         domGeometry,
+        domClass,
         _CssStateMixin,
         _Widget,
         _TemplatedMixin,
@@ -25,6 +27,7 @@ define([
             buildRendering: function () {
                 this.inherited(arguments);
                 this.set("position", this._position);
+                this.set("bottom", this._top);
             },
 
             _setPositionAttr: function (value) {
@@ -34,8 +37,25 @@ define([
                 }
             },
 
+            _setBottomAttr: function (value) {
+                if (!value) {
+                    return;
+                }
+                this._bottom = value;
+                if (this.domNode) {
+                    this.domNode.style.bottom = this._bottom + "px";
+                }
+            },
+
             _setValueAttr: function (value) {
                 this._value = value;
+            },
+
+            _getValueAttr: function () {
+                if (!this._value) {
+                    return null;
+                }
+                return new Date(this._value.getTime());
             },
 
             _setMaxPositionAttr: function (value) {
@@ -118,6 +138,15 @@ define([
 
             _setGroupAttr: function (value) {
                 this._group = value;
+            },
+
+            _setGroupIndexAttr: function (value) {
+                this._groupIndex = value;
+            },
+
+            _setVisibleAttr: function (value) {
+                this._visible = value;
+                domClass.toggle(this.domNode, "dijitHidden", !value);
             }
         });
 
@@ -140,7 +169,9 @@ define([
                 this.leftVersionHandle.addClass("left");
                 this.leftVersionHandle.set("value", 0);
                 this.own(on(this.leftVersionHandle, "positionChanged", function (position) {
-                    this.onLeftHandleChanged(this._convertPositionToDate(position));
+                    var value = this._convertPositionToDate(position);
+                    this.leftVersionHandle.set("value", value);
+                    this.onLeftHandleChanged(value);
                 }.bind(this)));
 
                 this.rightVersionHandle = new SliderHandle();
@@ -148,7 +179,9 @@ define([
                 this.rightVersionHandle.addClass("right");
                 this.rightVersionHandle.set("value", 0);
                 this.own(on(this.rightVersionHandle, "positionChanged", function (position) {
-                    this.onRightHandleChanged(this._convertPositionToDate(position));
+                    var value = this._convertPositionToDate(position);
+                    this.rightVersionHandle.set("value", value);
+                    this.onRightHandleChanged(value);
                 }.bind(this)));
             },
 
@@ -160,16 +193,24 @@ define([
             onRightHandleChanged: function (date) {
             },
 
-            addLabel: function (id, group, text, value, type, color) {
+
+            // groups count
+            _setGroupsCountAttr: function (value) {
+                this._groupsCount = value;
+            },
+
+            // groupIndex - allows to vertically position label
+            addLabel: function (id, group, text, value, type, color, groupIndex) {
                 var sliderLabel = new SliderLabel();
                 this._labels.push(sliderLabel);
                 sliderLabel.placeAt(this.labelsContainer);
 
                 sliderLabel.set("id", id);
                 sliderLabel.set("group", group);
-                sliderLabel.set("text", text + "\n" + value);
+                sliderLabel.set("text", text + " (" + id + ")\n" + value);
                 sliderLabel.set("colorStyle", color);
                 sliderLabel.set("value", value);
+                sliderLabel.set("groupIndex", groupIndex);
                 sliderLabel.addClass(type);
 
                 return sliderLabel;
@@ -207,7 +248,9 @@ define([
                 }
 
                 if (position >= this._maxWidth) {
-                    return this._maxDate;
+                    var maxDate = new Date(this._maxDate.getTime());
+                    maxDate.setSeconds(this._maxDate.getSeconds() + 1);
+                    return maxDate;
                 }
 
                 // orignal values before transforming into scale
@@ -225,6 +268,24 @@ define([
                 return result;
             },
 
+            updateLeftHandleDate: function (value) {
+                this.leftVersionHandle.set("value", value);
+                this.leftVersionHandle.set("position", this._convertDateToPoint(this.leftVersionHandle._value));
+            },
+
+            updateRightHandleDate: function (value) {
+                this.rightVersionHandle.set("value", value);
+                this.rightVersionHandle.set("position", this._convertDateToPoint(this.rightVersionHandle._value));
+            },
+
+            _getLeftHandleValueAttr: function () {
+                return this.leftVersionHandle.get("value");
+            },
+
+            _getRightHandleValueAttr: function () {
+                return this.rightVersionHandle.get("value");
+            },
+
             _setMinDateAttr: function (value) {
                 this._minDate = value;
                 this.leftVersionHandle.set("value", value);
@@ -235,8 +296,19 @@ define([
                 this.rightVersionHandle.set("value", value);
             },
 
+            toggleGroupVisibility: function (group, isVisible) {
+                this._labels.forEach(function (label) {
+                    if (label._group !== group) {
+                        return;
+                    }
+                    label.set("visible", isVisible);
+                }, this);
+            },
+
             layout: function () {
-                this._maxWidth = domGeometry.getMarginBox(this.sliderScale).w;
+                var sliderScaleRectangle = domGeometry.getMarginBox(this.sliderScale);
+                this._maxWidth = sliderScaleRectangle.w;
+                this._maxHeight = sliderScaleRectangle.h;
 
                 this.leftVersionHandle.set("maxPosition", this._maxWidth);
                 this.leftVersionHandle.set("position", this._convertDateToPoint(this.leftVersionHandle._value));
@@ -247,6 +319,10 @@ define([
                 this._labels.forEach(function (label) {
                     label.set("maxPosition", this._maxWidth);
                     label.set("position", this._convertDateToPoint(label._value));
+                    if (label._groupIndex && this._groupsCount) {
+                        var offset = 20;
+                        label.set("bottom", ((this._maxHeight - offset) * label._groupIndex / this._groupsCount) + offset);
+                    }
                 }, this);
             }
         });

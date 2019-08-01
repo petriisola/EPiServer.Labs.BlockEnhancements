@@ -395,7 +395,11 @@
     <Content Include="libman.json" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\content-compare-view-controller.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\compare-view.js" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\content-filter-item-template.html" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\content-filter-template.html" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\content-filters.css" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\date-formatter.js" />
+    <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\content-filter.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\initializer.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\label-color-resolver.js" />
     <Content Include="modules\_protected\episerver-labs-block-enhancements\1.0.0\Scripts\content-compare\styles.css" />
